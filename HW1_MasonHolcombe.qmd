@@ -1,0 +1,367 @@
+---
+title: "HW1 Mason Holcombe"
+format: html
+editor: visual
+---
+
+## 1
+
+```{r}
+x1 = c(3,4,2,6,8,2,5)
+x2 = c(5,5.5,4,7,10,5,7.5)
+x1bar = sum(x1) / 7
+x2bar = sum(x2) / 7
+
+s11 = sum((x1 - x1bar)^2) / 7
+s22 = sum((x2 - x2bar)^2) / 7
+
+s12 = sum((x1 - x1bar) * (x2 - x2bar)) / 7
+```
+
+x1bar = 4.285714
+
+x2bar = 6.285714
+
+s11 = 4.204082
+
+s22 = 3.561224
+
+s12 = 3.704082
+
+## 4
+
+```{r}
+df = data.frame(
+  company = c(
+    "Citigroup",
+    "General Electric",
+    "American Intl Group",
+    "Bank of America",
+    "HSBC Group",
+    "ExxonMobil",
+    "Royal Dutch/Shell",
+    "BP",
+    "ING Group",
+    "Toyota Motor"
+  ),
+  sales = c(108.28, 152.36, 95.04, 65.45, 62.97, 263.99, 265.19, 285.06, 92.01, 165.68),
+  profits = c(17.05, 16.59, 10.91, 14.14, 9.52, 25.33, 18.54, 15.73, 8.10, 11.13),
+  assets = c(1484.10, 750.33, 766.42, 1110.46, 1031.29,195.26, 193.83, 191.11, 1175.16, 211.15
+  )
+)
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(df, aes(x = sales, y = profits)) +
+  geom_point()
+ggplot(df, aes(x = sales)) +
+  geom_histogram()
+ggplot(df, aes(x = profits)) +
+  geom_histogram()
+
+```
+
+There seems to be correlation between sales and profits. This is seen in the linear relationship in the scatter plot.
+
+```{r}
+
+x1 = df$sales
+x2 = df$profits
+
+n = length(x1)
+x1bar = sum(x1) / n
+x2bar = sum(x2) / n
+
+s11 = sum((x1 - x1bar)^2) / n
+s22 = sum((x2 - x2bar)^2) / n
+
+s12 = sum((x1 - x1bar) * (x2 - x2bar)) / n
+
+r12 = s12 / sqrt(s11 * s22)
+```
+
+x1bar = 155.603
+
+x2bar = 14.704
+
+s11 = 6728.807
+
+s22 = 23.5712
+
+s12 = 273.256
+
+r2 = 0.6861
+
+68.61% of the variation in profits is explained in the variation seen in sales
+
+## 5
+
+```{r}
+ggplot(df, aes(x = profits, y = assets)) +
+  geom_point()
+```
+
+```{r}
+ggplot(df, aes(x = sales, y = assets)) +
+  geom_point()
+```
+
+```{r}
+x1 = df$sales
+x2 = df$profits
+x3 = df$assets
+
+n = length(x1)
+x1bar = sum(x1) / n
+x2bar = sum(x2) / n
+x3bar = sum(x3) / n
+
+xbar = c(x1bar, x2bar, x3bar)
+s11 = sum((x1 - x1bar)^2) / n
+s22 = sum((x2 - x2bar)^2) / n
+s33 = sum((x3 - x3bar)^2) / n
+
+s12 = sum((x1 - x1bar) * (x2 - x2bar)) / n
+s13 = sum((x1 - x1bar) * (x3 - x3bar)) / n
+s23 = sum((x2 - x2bar) * (x3 - x3bar)) / n
+
+S = matrix(c(
+  s11, s12, s13,
+  s12, s22, s23,
+  s13, s23, s33
+), nrow = 3, byrow = TRUE)
+
+r12 = s12 / sqrt(s11 * s22)
+r13 = s13 / sqrt(s11 * s33)
+r23 = s23 / sqrt(s22 * s33)
+
+R = matrix(c(
+  1,   r12, r13,
+  r12, 1,   r23,
+  r13, r23, 1
+), nrow = 3, byrow = TRUE)
+
+
+```
+
+```{r}
+xbar
+S
+R
+```
+
+## 9
+
+```{r}
+x1 = c(-6, -3, -2, 1, 2, 5, 6, 8)
+x2 = c(-2, -3, 1, -1, 2, 1, 5, 3)
+```
+
+```{r}
+prob9 = data.frame(x1 = x1, x2 = x2)
+ggplot(prob9, aes(x = x1, y = x2)) +
+  geom_point()
+```
+
+```{r}
+x1 = prob9$x1
+x2 = prob9$x2
+
+n = length(x1)
+x1bar = sum(x1) / n
+x2bar = sum(x2) / n
+
+s11 = sum((x1 - x1bar)^2) / n
+s22 = sum((x2 - x2bar)^2) / n
+
+s12 = sum((x1 - x1bar) * (x2 - x2bar)) / n
+```
+
+```{r}
+s11
+s22
+s12
+```
+
+b\)
+
+```{r}
+costheta = .899
+sintheta = .438
+
+x1tilde = x1 * costheta + x2 * sintheta
+x2tilde = -x1 * sintheta + x2 * costheta
+```
+
+```{r}
+x1tilde
+x2tilde
+```
+
+c\)
+
+```{r}
+prob9c = data.frame(x1 = x1tilde, x2 = x2tilde)
+x1tilde = prob9c$x1
+x2tilde = prob9c$x2
+
+ntilde = length(x1tilde)
+x1bartilde = sum(x1tilde) / n
+x2bartilde = sum(x2tilde) / n
+
+s11tilde = sum((x1tilde - x1bartilde)^2) / n
+s22tilde = sum((x2tilde - x2bartilde)^2) / n
+```
+
+```{r}
+x1bartilde
+x2bartilde
+s11tilde
+s22tilde
+```
+
+d\)
+
+```{r}
+newpoint_x1 = 4
+newpoint_x2 = -2
+
+newpoint_x1tilde = newpoint_x1 * costheta + newpoint_x2 * sintheta
+newpoint_x2tilde = -newpoint_x1 * sintheta + newpoint_x2 * costheta
+
+d_to_origin = sqrt(((newpoint_x1tilde^2) / s11tilde) + 
+                     ((newpoint_x2tilde^2) / s22tilde))
+```
+
+problem d distance to origin: 2.72417
+
+e\)
+
+```{r}
+
+a11 = (costheta^2 / (costheta^2 * s11 + 2*sintheta*costheta*s12 + sintheta^2 * s22)) + (sintheta^2 / (costheta^2*s22 - 2*sintheta*costheta*s12 + sintheta^2*s11))
+
+a22 = (sintheta^2 / (costheta^2 * s11 + 2*sintheta*costheta*s12 + sintheta^2 * s22)) + (costheta^2 / (costheta^2*s22 - 2*sintheta*costheta*s12 + sintheta^2*s11))
+
+a12 = ((costheta * sintheta) / (costheta^2 * s11 + 2*sintheta*costheta*s12 + sintheta^2 * s22)) - ((sintheta * costheta) / (costheta^2*s22 - 2*sintheta*costheta*s12 + sintheta^2*s11))
+
+
+d_to_origin_e = sqrt(a11 * newpoint_x1^2 + 
+                     2 * a12 * newpoint_x1 * newpoint_x2 + 
+                     a22 * newpoint_x2^2)
+```
+
+problem e distance to origin: 2.72417, matches with problem d
+
+## 12)
+
+![](images/clipboard-1364593919.png){width="390"}
+
+## 15
+
+```{r}
+radiother = read.table("./johnson_wichern_data/T1-7.DAT")
+ggplot(radiother, aes(x = V2, y = V3)) +
+  geom_point()
+
+```
+
+```{r}
+ggplot(radiother, aes(x = V2)) +
+  geom_histogram()
+ggplot(radiother, aes(x = V3)) +
+  geom_histogram()
+```
+
+Variable 3 looks to be almost normally distributed but there are many many samples making it slightly right skewed.
+
+b\)
+
+```{r}
+compute_means = function(df){
+  n = nrow(df)
+  p = ncol(df)
+  
+  xbar = numeric(p)
+  for (i in 1:p){
+      xbar[i] = sum(df[[i]]) / n
+  }
+  
+  return(xbar)
+}
+
+compute_covariance = function(df){
+  n = nrow(df)
+  p = ncol(df)
+  
+  col_means = compute_means(df)
+  
+  S = matrix(0, nrow=p, ncol=p)
+  for (i in 1:p){
+    for (j in i:p){
+      cov_ij = sum((df[[i]] - col_means[i]) * (df[[j]] - col_means[j])) / n
+      S[i, j] = cov_ij
+      S[j, i] = cov_ij
+    }
+  }
+  return(S)
+}
+
+compute_R = function(df){
+  p = ncol(df)
+  
+  S = compute_covariance(df)
+  
+  R = matrix(0, nrow=p, ncol=p)
+  for (i in 1:p){
+    for (j in 1:p){
+      R[i, j] = S[i, j] / sqrt((S[i, i] * S[j, j]))
+    }
+  }
+  return(R)
+}
+```
+
+```{r}
+compute_means(radiother)
+compute_covariance(radiother)
+compute_R(radiother)
+```
+
+Overall moderate pairwise correlations, however feature 4 (amount of food consumed) and feature 5 (appetite) were most correlated.
+
+## 17
+
+```{r}
+library(dplyr)
+
+trackrec = read.table("./johnson_wichern_data/T1-9.dat") %>% select(-V1)
+
+compute_means(trackrec)
+compute_covariance(trackrec)
+compute_R(trackrec)
+
+```
+
+I notice as you go off of the main diagonal the correlation coefficients drop from .9s to .6s. Similar distance races are much more correlated with each other than races in much different distances.
+
+```{r}
+mps_df = trackrec %>% 
+        mutate(
+          v2_mps = 100 / V2,
+          v3_mps = 200 / V3,
+          v4_mps = 400 / V4,
+          v5_mps = 800 / (V5 * 60),
+          v6_mps = 1500 / (V6 * 60),
+          v7_mps = 3000 / (V7 * 60),
+          v8_mps = 42195 / (V8 * 60)
+        ) %>% select(v2_mps, v3_mps, v4_mps, v5_mps, v6_mps, v7_mps, v8_mps)
+
+compute_means(mps_df)
+compute_covariance(mps_df)
+compute_R(mps_df)
+```
+
+Very similar results as 17. As you go off of the main diagonal, the results are less correlated with each other. This indicates races with similar distances are more correlated than races with different distances in both time and velocity.
