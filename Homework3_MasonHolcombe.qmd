@@ -1,0 +1,168 @@
+---
+title: "HW3_MasonHolcombe"
+format: html
+editor: visual
+---
+
+## Mason Holcombe
+
+### Chapter 4
+
+#### 3)
+
+a\) Covariance = 2 and does not 0, not independent
+
+b\) Covariance = 0, so X2 and X3 are independent
+
+c\) Cov(x1,x3) = 0, cov(x2, x3) = 0, so (X1,X2) and X2 are independent
+
+d\) 1/2 \* (cov(x1,x3) and cov(x2, x3)). Both of these are 0, so 1/2 \* 0 = 0. D is independent
+
+e\) cov(x2,x2) = 5, cov(-5/2x1, x2) = -5/2 \* cov(x1,x2) = -5/2 \* -2 = 5, and cov(x2, x3) = 0. So the final covariance is 5 + 5 + 0 = 10 and this does not equal 0. So x2 and (e) are not independent.
+
+#### 4)
+
+a\)
+
+```{r}
+mu = c(2,-3,1)
+sigma = matrix(c(1,1,1,
+                 1,3,2,
+                 1,2,2), byrow=T, ncol=3)
+a = c(3, -2, 1)
+```
+
+```{r}
+mean = t(a) %*% mu
+var = t(a) %*% sigma %*% a
+c(mean, var)
+```
+
+3x1 - 2x2 + x2 \~ N(13, 9)
+
+#### 19)
+
+a\) \~ $\chi_6^2$ chi2 with 6 df
+
+b\)
+
+-   p-variate normal with mu as mean and 1/20 \* sigma as covariance matrix
+
+-   p-variate normal with 0 as mean and sigma as covariance matrix
+
+c\) wishart distribution with 19 (20-1) df and sigma as the scale matrix
+
+#### 29)
+
+```{r}
+air = read.table("T1-5.DAT")
+x5 = air["V5"]
+x6 = air["V6"]
+
+X = cbind(x5, x6)
+n = nrow(X)
+```
+
+a\)
+
+```{r}
+xbar = colMeans(X)
+S = cov(X)
+Sinv = solve(S)
+
+result = numeric(n)
+for (i in 1:n){
+  xi = matrix(as.numeric(X[i, ]),
+              ncol=1)
+  result[i] = t(xi - xbar) %*% Sinv %*% (xi - xbar)
+}
+(result)
+```
+
+b\)
+
+```{r}
+cutoff = qchisq(0.5, df=2)
+mean(result <= cutoff)
+```
+
+c\)
+
+```{r}
+results_sorted = sort(result)
+theoretical_chi2 = qchisq((1:n - (1/2)) / n, df=2)
+
+plot(theoretical_chi2, results_sorted)
+abline(0,1,col='red')
+```
+
+#### 39)
+
+```{r}
+data39 = read.table("T4-6.DAT")
+indep = data39["V1"]
+supp = data39["V2"]
+benev = data39["V3"]
+conform = data39["V4"]
+leader = data39["V5"]
+
+gender = data39["V6"]
+socio = data39["V7"]
+```
+
+a\)
+
+Independence - NORMAL
+
+```{r}
+hist(indep$V1)
+qqnorm(indep$V1)
+```
+
+Support -- NOT NORMAL
+
+```{r}
+hist(supp$V2)
+qqnorm(supp$V2)
+```
+
+Benevolence -- NOT NORMAL (SKEWED LEFT)
+
+```{r}
+hist(benev$V3)
+qqnorm(benev$V3)
+```
+
+Conform - NORMAL
+
+```{r}
+hist(conform$V4)
+qqnorm(conform$V4)
+```
+
+Leader -- NOT NORMAL (SKEWED RIGHT)
+
+```{r}
+hist(leader$V5)
+qqnorm(leader$V5)
+```
+
+b\)
+
+```{r}
+install.packages("MVN", dependencies = TRUE)
+library("MVN")
+```
+
+```{r}
+varnames = c("V1", "V2", "V3", "V4", "V5")
+features = data39[ ,varnames]
+```
+
+```{r}
+mvn_result <- mvn(data = df[vars], mvnTest = "royston")
+```
+
+```{r}
+install.packages("MVN", type = "source")
+```
