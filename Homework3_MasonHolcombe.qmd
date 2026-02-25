@@ -238,3 +238,61 @@ CXSinv = solve(cov(CX))
 CXT2 = n * t(CXbar - CXmu) %*% CXSinv %*% (CXbar - CXmu)
 (CXT2[1,1])
 ```
+
+#### 18)
+
+```{r}
+data18 = read.table("T5-2.DAT")
+```
+
+a\)
+
+```{r}
+mu0 = c(500, 50, 30)
+alpha = 0.05
+n = 87
+p = 3
+
+xbar18 = colMeans(data18)
+Sinv18 = solve(cov(data18))
+
+T2_18 = n * t(xbar18 - mu0) %*% Sinv18 %*% (xbar18 - mu0)
+
+fobs = ((n-p)/(p*(n-1))) * T2_18[1,1]
+fcrit = qf(0.05, p, n-p, lower.tail=F)
+
+(fobs > fcrit)
+
+```
+
+**Reject** $H_0: \mu = [500, 50, 30]$ at $\alpha=0.05$. There is strong evidence that $\mu$ differs from \[500, 50, 30\]. This shows that the group of n=87 students scored [differently]{.underline} than the group of thousands of college students which averaged \[500, 50, 30\].
+
+b\)
+
+```{r}
+S18 = cov(data18)
+eig18 = eigen(S18)
+
+lengths = sqrt(eig18$values) * sqrt(((p*(n-1)) / (n*(n-p))) * fcrit)
+directions = eig18$vectors
+
+(lengths)
+(directions)
+```
+
+c\)
+
+```{r}
+feature_names = c("V1", "V2", "V3")
+
+for (i in 1:length(feature_names)){
+  qqnorm(data18[[feature_names[i]]], main=feature_names[i])
+  qqline(data18[[feature_names[i]]])
+}
+```
+
+```{r}
+pairs(data18)
+```
+
+V1 and V3 appear to fall along the theoretical quantiles, whereas V2 has extremes on both ends of the distribution. Looking into the pair plots, I notice a positive covariance among many of the variables. V3 and V1 look the most normally distributed with one another.
