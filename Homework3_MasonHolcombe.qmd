@@ -126,7 +126,7 @@ hist(supp$V2)
 qqnorm(supp$V2)
 ```
 
-Benevolence -- NOT NORMAL (SKEWED LEFT)
+Benevolence -- NORMAL
 
 ```{r}
 hist(benev$V3)
@@ -150,7 +150,6 @@ qqnorm(leader$V5)
 b\)
 
 ```{r}
-install.packages("MVN", dependencies = TRUE)
 library("MVN")
 ```
 
@@ -160,9 +159,9 @@ features = data39[ ,varnames]
 ```
 
 ```{r}
-mvn_result <- mvn(data = df[vars], mvnTest = "royston")
-```
+mvn_result = mvn(data = features, mvn_test = "mardia")
+(mvn_result$multivariate_normality)
 
-```{r}
-install.packages("MVN", type = "source")
+mvn_result2 = mvn(data = features, mvn_test = "hz")
+(mvn_result2$multivariate_normality)
 ```
