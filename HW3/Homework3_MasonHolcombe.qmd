@@ -55,7 +55,7 @@ c\) wishart distribution with 19 (20-1) df and sigma as the scale matrix
 #### 29)
 
 ```{r}
-air = read.table("T1-5.DAT")
+air = read.table("../johnson_wichern_data/T1-5.DAT")
 x5 = air["V5"]
 x6 = air["V6"]
 
@@ -99,7 +99,7 @@ abline(0,1,col='red')
 #### 39)
 
 ```{r}
-data39 = read.table("T4-6.DAT")
+data39 = read.table("../johnson_wichern_data/T4-6.DAT")
 indep = data39["V1"]
 supp = data39["V2"]
 benev = data39["V3"]
@@ -242,7 +242,7 @@ CXT2 = n * t(CXbar - CXmu) %*% CXSinv %*% (CXbar - CXmu)
 #### 18)
 
 ```{r}
-data18 = read.table("T5-2.DAT")
+data18 = read.table("../johnson_wichern_data/T5-2.DAT")
 ```
 
 a\)
