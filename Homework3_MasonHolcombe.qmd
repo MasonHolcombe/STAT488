@@ -150,18 +150,91 @@ qqnorm(leader$V5)
 b\)
 
 ```{r}
-library("MVN")
-```
-
-```{r}
 varnames = c("V1", "V2", "V3", "V4", "V5")
 features = data39[ ,varnames]
 ```
 
 ```{r}
+library("MVN")
+
 mvn_result = mvn(data = features, mvn_test = "mardia")
 (mvn_result$multivariate_normality)
 
 mvn_result2 = mvn(data = features, mvn_test = "hz")
 (mvn_result2$multivariate_normality)
+```
+
+c\)
+
+```{r}
+support_sqrt = sqrt(supp$V2)
+
+hist(support_sqrt)
+qqnorm(support_sqrt)
+qqline(support_sqrt)
+```
+
+```{r}
+leader_log = log(leader$V5)
+
+hist(leader_log)
+qqnorm(leader_log)
+qqline(leader_log)
+```
+
+### Chapter 5
+
+#### 1
+
+a\)
+
+```{r}
+n = 4
+p = 2
+
+X = matrix(c(2,12,
+             8,9,
+             6,9,
+             8,10), byrow=T, nrow=4, ncol=2)
+mu = c(7, 11)
+
+xbar = colMeans(X)
+Sinv = solve(cov(X))
+
+T2 = n * t(xbar - mu) %*% Sinv %*% (xbar - mu)
+(T2[1,1])
+```
+
+b\)
+
+$T^2$ is distributed as $\frac{6}{2}F_{2, 2} = 3 F_{2, 2}$ or $\frac{1}{3} T^2 \sim F_{2,2}$
+
+c\)
+
+```{r}
+alpha = 0.05
+
+fobs = (1/3) * T2[1,1]
+fcrit = qf(0.05, 2, 2, lower.tail=F)
+
+(fobs > fcrit)
+
+```
+
+**Fail** to reject $H_0: \mu = [7,11]$ at $\alpha=0.05$. The data does not have enough evidence to conclude the mean differs from \[7,11\]
+
+#### 2)
+
+```{r}
+C = matrix(c(1, -1,
+             1, 1), byrow=T, nrow=2, ncol=2)
+CX = t(C %*% t(X))
+CXmu = C %*% c(7, 11)
+
+
+CXbar = colMeans(CX)
+CXSinv = solve(cov(CX))
+
+CXT2 = n * t(CXbar - CXmu) %*% CXSinv %*% (CXbar - CXmu)
+(CXT2[1,1])
 ```
